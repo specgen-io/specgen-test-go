@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"github.com/husobee/vestigo"
 	"log"
 	"net/http"
@@ -8,6 +10,9 @@ import (
 )
 
 func main() {
+	port := flag.String("port", "8081", "port number")
+	flag.Parse()
+
 	router := vestigo.NewRouter()
 
 	router.SetGlobalCors(&vestigo.CorsAccessControl{
@@ -17,5 +22,6 @@ func main() {
 	spec.AddEchoRoutes(router, &spec.EchoService{})
 	spec.AddCheckRoutes(router, &spec.CheckService{})
 
-	log.Fatal(http.ListenAndServe(":8081", router))
+	fmt.Println("Starting service on port: "+*port)
+	log.Fatal(http.ListenAndServe(":"+*port, router))
 }
