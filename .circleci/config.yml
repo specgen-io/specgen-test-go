@@ -1,0 +1,47 @@
+version: 2.1
+
+jobs:
+  build-specgen:
+    docker:
+      - image: circleci/golang:1.12
+    working_directory: /go/src/specgen-test-service-go
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: ./build.sh
+#      - run:
+#          name: Unit tests
+#          command: |
+#            mkdir -p /tmp/test-results
+#            go get -u github.com/jstemmer/go-junit-report
+#            go test ./... -v 2>&1 | ../../bin/go-junit-report > /tmp/test-results/go-test-report.xml
+      - store_artifacts:
+          path: ./zips
+          destination: zips
+      - store_artifacts:
+          path: ./dist
+          destination: specgen-test-service-go
+#      - store_artifacts:
+#          path: /tmp/test-results
+#          destination: go-test-report
+      - store_test_results:
+          path: /tmp/test-results
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+#      - run:
+#          name: Release
+#          command: |
+#            if [ $CIRCLE_BRANCH = "main" ]; then
+#              ./release.sh << pipeline.parameters.specgen-version >> ${GITHUB_TOKEN}
+#            else
+#              echo "Will not release - not running on main branch"
+#            fi
+
+workflows:
+  build-release:
+    jobs:
+      - build-specgen:
+          context: specgen

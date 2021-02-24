@@ -4,7 +4,7 @@ import (
 	"github.com/husobee/vestigo"
 	"log"
 	"net/http"
-	"specgen-test-go/spec"
+	"specgen-test-service-go/spec"
 )
 
 func main() {
