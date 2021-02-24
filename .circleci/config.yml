@@ -6,7 +6,7 @@ parameters:
     default: 1.10.18
 
 jobs:
-  build-test-release:
+  service-go:
     docker:
       - image: circleci/golang:1.12
     working_directory: /go/src/specgen-test-service-go
@@ -46,7 +46,7 @@ jobs:
             fi
 
 workflows:
-  build-release:
+  service-go:
     jobs:
-      - build-test-release:
+      - service-go:
           context: specgen
