@@ -1,7 +1,12 @@
 version: 2.1
 
+parameters:
+  specgen-version:
+    type: string
+    default: 1.10.18
+
 jobs:
-  build-specgen:
+  build-test-release:
     docker:
       - image: circleci/golang:1.12
     working_directory: /go/src/specgen-test-service-go
@@ -31,17 +36,17 @@ jobs:
           root: .
           paths:
             - dist
-#      - run:
-#          name: Release
-#          command: |
-#            if [ $CIRCLE_BRANCH = "main" ]; then
-#              ./release.sh << pipeline.parameters.specgen-version >> ${GITHUB_TOKEN}
-#            else
-#              echo "Will not release - not running on main branch"
-#            fi
+      - run:
+          name: Release
+          command: |
+            if [ $CIRCLE_BRANCH = "main" ]; then
+              ./release.sh << pipeline.parameters.specgen-version >> ${GITHUB_TOKEN}
+            else
+              echo "Will not release - not running on main branch"
+            fi
 
 workflows:
   build-release:
     jobs:
-      - build-specgen:
+      - build-test-release:
           context: specgen
