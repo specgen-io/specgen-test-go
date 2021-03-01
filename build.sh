@@ -23,7 +23,7 @@ do
         exec_name+='.exe'
     fi
 
-    env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-s -w" -o $exec_name main.go
+    env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-s -w" -o $exec_name service.go
     if [ $? -ne 0 ]; then
         echo 'An error has occurred! Aborting the script execution...'
         exit 1

@@ -6,7 +6,7 @@ import (
 	"github.com/husobee/vestigo"
 	"log"
 	"net/http"
-	"specgen-test-service-go/spec"
+	"test-service-go/spec"
 )
 
 func main() {

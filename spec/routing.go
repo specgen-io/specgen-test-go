@@ -2,10 +2,19 @@ package spec
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/husobee/vestigo"
 	"net/http"
-	"strconv"
 )
+
+func checkErrors(params *ParamsParser, w http.ResponseWriter) bool {
+	if len(params.Errors) > 0 {
+		w.WriteHeader(400)
+		fmt.Println(params.Errors)
+		return false
+	}
+	return true
+}
 
 func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 	router.Post("/echo/body", func (w http.ResponseWriter, r *http.Request) {
@@ -16,51 +25,62 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/echo/query", func (w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-		intQuery, _ := strconv.Atoi(query["int_query"][0])
-		stringQuery := query["string_query"][0]
-		response := echoService.EchoQuery(intQuery, stringQuery)
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(response.Ok)
+		query := NewParamsParser(r.URL.Query())
+		intQuery := query.Int("int_query")
+		stringQuery := query.String("string_query")
+		if checkErrors(query, w) {
+			response := echoService.EchoQuery(intQuery, stringQuery)
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+		}
 	})
 	router.Get("/echo/header", func (w http.ResponseWriter, r *http.Request) {
-		intHeader, _ := strconv.Atoi(r.Header.Get("Int-Header"))
-		stringHeader := r.Header.Get("String-Header")
-		response := echoService.EchoHeader(intHeader, stringHeader)
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(response.Ok)
+		header := NewParamsParser(r.Header)
+		intHeader := header.Int("Int-Header")
+		stringHeader := header.String("String-Header")
+		if checkErrors(header, w) {
+			response := echoService.EchoHeader(intHeader, stringHeader)
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+		}
 	})
 	router.SetCors("/echo/header", &vestigo.CorsAccessControl{
 		AllowHeaders: []string{"Int-Header", "String-Header"},
 	})
 	router.Get("/echo/url_params/:int_url/:string_url", func (w http.ResponseWriter, r *http.Request) {
-		intUrl, _ := strconv.Atoi(vestigo.Param(r, "int_url"))
-		stringUrl := vestigo.Param(r, "string_url")
-		response := echoService.EchoUrlParams(intUrl, stringUrl)
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(response.Ok)
+		query := NewParamsParser(r.URL.Query())
+		intUrl := query.Int(":int_url")
+		stringUrl := query.String(":string_url")
+		if checkErrors(query, w) {
+			response := echoService.EchoUrlParams(intUrl, stringUrl)
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+		}
 	})
 }
 
 func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 	router.Get("/check/query", func (w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-		pString := query["p_string"][0]
-		pStringOpt := &query["p_string_opt"][0]
-		pStringArray := query["p_string_array"]
-		pDate := query["p_date"][0]
-		pDateArray := query["p_date_array"]
-		pTime := query["p_time"][0]
-		pDatetime := query["p_datetime"][0]
-		pByte, _ := strconv.Atoi(query["p_byte"][0])
-		pInt, _ := strconv.Atoi(query["p_int"][0])
-		pLong, _ := strconv.ParseInt(query["p_long"][0], 10, 64)
-		pDecimal, _ := strconv.ParseFloat(query["p_decimal"][0], 64)
-		pChar := query["p_char"][0]
-		pEnum := Choice(query["p_enum"][0])
-		pStringDefaulted := query["p_string_defaulted"][0]
-		response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pTime, pDatetime, pByte, pInt, pLong, pDecimal, pChar, pEnum, pStringDefaulted)
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(response.Ok)
+		query := NewParamsParser(r.URL.Query())
+		pString := query.String("p_string")
+		pStringOpt := query.StringNullable("p_string_opt")
+		pStringArray := query.StringArray("p_string_array")
+		pDate := query.String("p_date")
+		pDateArray := query.StringArray("p_date_array")
+		pTime := query.String("p_time")
+		pDatetime := query.String("p_datetime")
+		pByte := query.Int("p_byte")
+		pInt := query.Int("p_int")
+		pLong := query.Int64("p_long")
+		pDecimal := query.Float64("p_decimal")
+		pChar := query.String("p_char")
+		pEnum := Choice(query.StringEnum("p_enum", ChoiceValuesStrings))
+		pStringDefaulted := query.StringDefaulted("p_string_defaulted", "the default value")
+
+		if checkErrors(query, w) {
+			response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pTime, pDatetime, pByte, pInt, pLong, pDecimal, pChar, pEnum, pStringDefaulted)
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+		}
 	})
 }
