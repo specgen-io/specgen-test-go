@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.20
+    default: 1.10.24
 
 jobs:
   service-go:
