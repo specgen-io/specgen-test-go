@@ -8,13 +8,10 @@ func (service *CheckService) CheckQuery(
 	pStringArray []string,
 	pDate string,
 	pDateArray []string,
-	pTime string,
 	pDatetime string,
-	pByte int,
 	pInt int,
 	pLong int64,
 	pDecimal float64,
-	pChar string,
 	pEnum Choice,
 	pStringDefaulted string) *CheckQueryResponse {
 

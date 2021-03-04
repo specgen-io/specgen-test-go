@@ -35,5 +35,5 @@ type CheckQueryResponse struct {
 }
 
 type ICheckService interface {
-	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate string, pDateArray []string, pTime string, pDatetime string, pByte int, pInt int, pLong int64, pDecimal float64, pChar string, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
+	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate string, pDateArray []string, pDatetime string, pInt int, pLong int64, pDecimal float64, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
 }

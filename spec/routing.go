@@ -67,18 +67,15 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		pStringArray := query.StringArray("p_string_array")
 		pDate := query.String("p_date")
 		pDateArray := query.StringArray("p_date_array")
-		pTime := query.String("p_time")
 		pDatetime := query.String("p_datetime")
-		pByte := query.Int("p_byte")
 		pInt := query.Int("p_int")
 		pLong := query.Int64("p_long")
 		pDecimal := query.Float64("p_decimal")
-		pChar := query.String("p_char")
 		pEnum := Choice(query.StringEnum("p_enum", ChoiceValuesStrings))
 		pStringDefaulted := query.StringDefaulted("p_string_defaulted", "the default value")
 
 		if checkErrors(query, w) {
-			response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pTime, pDatetime, pByte, pInt, pLong, pDecimal, pChar, pEnum, pStringDefaulted)
+			response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pDatetime, pInt, pLong, pDecimal, pEnum, pStringDefaulted)
 			w.WriteHeader(200)
 			json.NewEncoder(w).Encode(response.Ok)
 		}
