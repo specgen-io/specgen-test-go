@@ -4,6 +4,9 @@ parameters:
   specgen-version:
     type: string
     default: 1.10.32
+  tests-version:
+    type: string
+    default: "1.0"
 
 jobs:
   service-go:
@@ -15,12 +18,25 @@ jobs:
       - run:
           name: Build
           command: ./build.sh
-#      - run:
-#          name: Unit tests
-#          command: |
-#            mkdir -p /tmp/test-results
-#            go get -u github.com/jstemmer/go-junit-report
-#            go test ./... -v 2>&1 | ../../bin/go-junit-report > /tmp/test-results/go-test-report.xml
+
+      - run:
+          name: Install service-tests
+          command: |
+            curl -L https://github.com/specgen-io/service-tests/releases/download/<< pipeline.parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
+            unzip -o service-tests.zip
+            ls -la
+      - run:
+          name: Install go-junit-report
+          command: |
+            curl -L https://github.com/vsapronov/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
+            unzip -o go-junit-report.zip
+            ls -la
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p ./test-results
+            ./service-tests -test.v 2>&1 | ./go-junit-report > ./test-results/go-test-report.xml
+
       - store_artifacts:
           path: ./zips
           destination: zips
