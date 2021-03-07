@@ -20,11 +20,19 @@ jobs:
           command: ./build.sh
 
       - run:
+          name: Start service-go
+          command: ./dist/linux_amd64/service-go --port 8081
+          background: true
+      - wait-url:
+          url: http://localhost:8081/
+
+      - run:
           name: Install service-tests
           command: |
             curl -L https://github.com/specgen-io/service-tests/releases/download/<< pipeline.parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
             unzip -o service-tests.zip
             ls -la
+
       - run:
           name: Install go-junit-report
           command: |
@@ -43,11 +51,11 @@ jobs:
       - store_artifacts:
           path: ./dist
           destination: test-service-go
-#      - store_artifacts:
-#          path: /tmp/test-results
-#          destination: go-test-report
+      - store_artifacts:
+          path: ./test-results
+          destination: go-test-report
       - store_test_results:
-          path: /tmp/test-results
+          path: ./test-results
       - persist_to_workspace:
           root: .
           paths:
