@@ -33,33 +33,9 @@ jobs:
             unzip -o service-tests.zip
             ls -la
 
-      - run:
-          name: Install go-junit-report
-          command: |
-            curl -L https://github.com/vsapronov/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
-            unzip -o go-junit-report.zip
-            ls -la
-      - run:
-          name: Run tests
-          command: |
-            mkdir -p ./test-results
-            ./service-tests -test.v 2>&1 | ./go-junit-report > ./test-results/go-test-report.xml
+      - go-tests:
+          command: ./service-tests -test.v
 
-      - store_artifacts:
-          path: ./zips
-          destination: zips
-      - store_artifacts:
-          path: ./dist
-          destination: test-service-go
-      - store_artifacts:
-          path: ./test-results
-          destination: go-test-report
-      - store_test_results:
-          path: ./test-results
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist
       - run:
           name: Release
           command: |
@@ -70,6 +46,25 @@ jobs:
             fi
 
 commands:
+  go-tests:
+    parameters:
+      command:
+        type: string
+        default: go test
+    steps:
+      - run:
+          name: Install go-junit-report
+          command: |
+            curl -L https://github.com/vsapronov/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
+            unzip -o go-junit-report.zip
+            ls -la
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p ./test-results
+            << parameters.command >> 2>&1 | ./go-junit-report > ./test-results/go-test-report.xml
+      - store_test_results:
+          path: ./test-results
   wait-url:
     parameters:
       url:
