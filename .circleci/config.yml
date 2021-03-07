@@ -69,6 +69,35 @@ jobs:
               echo "Will not release - not running on main branch"
             fi
 
+commands:
+  wait-url:
+    parameters:
+      url:
+        type: string
+      sleep:
+        type: integer
+        default: 5
+      attempts:
+        type: integer
+        default: 12
+    steps:
+      - run:
+          name: Wait until url is available
+          command: |
+            attempt_counter=0
+            max_attempts=<< parameters.attempts >>
+
+            until $(curl --output /dev/null --silent --head --fail << parameters.url >>); do
+              if [ ${attempt_counter} -eq ${max_attempts} ];then
+                echo "Max attempts reached"
+                exit 1
+              fi
+
+              printf '.'
+              attempt_counter=$(($attempt_counter+1))
+              sleep << parameters.sleep >>
+            done
+
 workflows:
   service-go:
     jobs:
