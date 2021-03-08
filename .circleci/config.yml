@@ -26,12 +26,7 @@ jobs:
       - wait-url:
           url: http://localhost:8081/
 
-      - run:
-          name: Install service-tests
-          command: |
-            curl -L https://github.com/specgen-io/service-tests/releases/download/<< pipeline.parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
-            unzip -o service-tests.zip
-            ls -la
+      - service-tests
 
       - go-tests:
           command: ./service-tests -test.v
@@ -46,6 +41,15 @@ jobs:
             fi
 
 commands:
+  service-tests:
+    steps:
+      - run:
+          name: Install service-tests
+          command: |
+            curl -L https://github.com/specgen-io/service-tests/releases/download/<< pipeline.parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
+            unzip -o service-tests.zip
+      - go-tests:
+          command: ./service-tests -test.v
   go-tests:
     parameters:
       command:
@@ -57,7 +61,6 @@ commands:
           command: |
             curl -L https://github.com/vsapronov/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
             unzip -o go-junit-report.zip
-            ls -la
       - run:
           name: Run tests
           command: |
