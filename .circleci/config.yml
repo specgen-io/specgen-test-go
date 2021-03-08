@@ -6,7 +6,7 @@ parameters:
     default: 1.10.32
   tests-version:
     type: string
-    default: "1.0"
+    default: 1.0.8
 
 jobs:
   service-go:
@@ -26,10 +26,8 @@ jobs:
       - wait-url:
           url: http://localhost:8081/
 
-      - service-tests
-
-      - go-tests:
-          command: ./service-tests -test.v
+      - service-tests:
+          tests-version: << pipeline.parameters.tests-version >>
 
       - run:
           name: Release
@@ -42,11 +40,14 @@ jobs:
 
 commands:
   service-tests:
+    parameters:
+      tests-version:
+        type: string
     steps:
       - run:
           name: Install service-tests
           command: |
-            curl -L https://github.com/specgen-io/service-tests/releases/download/<< pipeline.parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
+            curl -L https://github.com/specgen-io/service-tests/releases/download/<< parameters.tests-version >>/service-tests_linux_amd64.zip > service-tests.zip
             unzip -o service-tests.zip
       - go-tests:
           command: ./service-tests -test.v
