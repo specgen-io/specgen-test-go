@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.62
+    default: 1.10.66
   tests-version:
     type: string
     default: 1.0.8
