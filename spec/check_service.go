@@ -17,3 +17,7 @@ func (service *CheckService) CheckQuery(
 
 	return &CheckQueryResponse{Ok: Empty()}
 }
+
+func (service *CheckService) CheckResponseForbidden() *CheckResponseForbiddenResponse {
+	return &CheckResponseForbiddenResponse{Forbidden: Empty()}
+}
