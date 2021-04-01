@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"test-service-go/spec"
+	"test-service-go/spec_v2"
 )
 
 func main() {
@@ -25,6 +26,7 @@ func main() {
 
 	spec.AddEchoRoutes(router, &spec.EchoService{})
 	spec.AddCheckRoutes(router, &spec.CheckService{})
+	spec_v2.AddEchoRoutes(router, &spec_v2.EchoService{})
 
 	fmt.Println("Starting service on port: "+*port)
 	log.Fatal(http.ListenAndServe(":"+*port, router))
