@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"github.com/husobee/vestigo"
+	"github.com/specgen-io/test-service-go/spec"
+	"github.com/specgen-io/test-service-go/spec_v2"
 	"log"
 	"net/http"
-	"test-service-go/spec"
-	"test-service-go/spec_v2"
 )
 
 func main() {
