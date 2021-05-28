@@ -11,8 +11,8 @@ parameters:
 jobs:
   service-go:
     docker:
-      - image: circleci/golang:1.12
-    working_directory: /go/src/test-service-go
+      - image: cimg/go:1.15.6
+    working_directory: ~/test-service-go
     steps:
       - checkout
       - run:

@@ -1,7 +1,5 @@
 #!/bin/bash -x
 
-dep ensure
-
 mkdir -p ./zips
 mkdir -p ./dist
 
