@@ -1,0 +1,79 @@
+spec: 2
+name: test-service
+version: 1
+
+v2:
+  http:
+    echo:
+      echo_body:
+        endpoint: POST /echo/body
+        body: Message
+        response:
+          ok: Message
+  models:
+    Message:
+      bool_field: boolean
+      string_field: string
+
+http:
+  echo:
+    echo_body:
+      endpoint: POST /echo/body
+      body: Message
+      response:
+        ok: Message
+
+    echo_query:
+      endpoint: GET /echo/query
+      query:
+        int_query: int
+        string_query: string
+      response:
+        ok: Message
+
+    echo_header:
+      endpoint: GET /echo/header
+      header:
+        Int-Header: int
+        String-Header: string
+      response:
+        ok: Message
+
+    echo_url_params:
+      endpoint: GET /echo/url_params/{int_url:int}/{string_url:string}
+      response:
+        ok: Message
+
+  check:
+    check_query:
+      endpoint: GET /check/query
+      query:
+        p_string: string
+        p_string_opt: string?
+        p_string_array: string[]
+        p_date: date
+        p_date_array: date[]
+        p_datetime: datetime
+        p_int: int
+        p_long: long
+        p_decimal: decimal
+        p_enum: Choice
+        p_string_defaulted: string = the default value
+      response:
+        ok: empty
+
+    check_forbidden:
+      endpoint: GET /check/forbidden
+      response:
+        forbidden: empty
+
+models:
+  Message:
+    int_field: int
+    string_field: string
+
+  Choice:
+    enum:
+      first_choice: FIRST_CHOICE
+      second_choice: SECOND_CHOICE
+      third_choice: THIRD_CHOICE
