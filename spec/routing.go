@@ -28,11 +28,10 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		query := NewParamsParser(r.URL.Query())
 		intQuery := query.Int("int_query")
 		stringQuery := query.String("string_query")
-		if checkErrors(query, w) {
-			response := echoService.EchoQuery(intQuery, stringQuery)
-			w.WriteHeader(200)
-			json.NewEncoder(w).Encode(response.Ok)
-		}
+		if !checkErrors(query, w) { return }
+		response := echoService.EchoQuery(intQuery, stringQuery)
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/echo/header", func(w http.ResponseWriter, r *http.Request) {
 	})
@@ -54,11 +53,10 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		pDecimal := query.Float64("p_decimal")
 		pEnum := Choice(query.StringEnum("p_enum", ChoiceValuesStrings))
 		pStringDefaulted := query.StringDefaulted("p_string_defaulted", "the default value")
-		if checkErrors(query, w) {
-			response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pDatetime, pInt, pLong, pDecimal, pEnum, pStringDefaulted)
-			w.WriteHeader(200)
-			json.NewEncoder(w).Encode(response.Ok)
-		}
+		if !checkErrors(query, w) { return }
+		response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pDatetime, pInt, pLong, pDecimal, pEnum, pStringDefaulted)
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/check/forbidden", func(w http.ResponseWriter, r *http.Request) {
 	})
