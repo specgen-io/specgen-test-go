@@ -1,5 +1,9 @@
 package spec
 
+import (
+	"cloud.google.com/go/civil"
+	"github.com/shopspring/decimal"
+)
 
 type EchoBodyResponse struct {
 	Ok Message
@@ -40,6 +44,6 @@ type CheckResponseForbiddenResponse struct {
 }
 
 type ICheckService interface {
-	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate string, pDateArray []string, pDatetime string, pInt int, pLong int64, pDecimal float64, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
+	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
 	CheckResponseForbidden() *CheckResponseForbiddenResponse
 }
