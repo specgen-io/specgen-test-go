@@ -38,12 +38,12 @@ type CheckQueryResponse struct {
 	Ok interface{}
 }
 
-type CheckResponseForbiddenResponse struct {
+type CheckForbiddenResponse struct {
 	Ok interface{}
 	Forbidden interface{}
 }
 
 type ICheckService interface {
 	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
-	CheckResponseForbidden() *CheckResponseForbiddenResponse
+	CheckForbiddenResponse() *CheckForbiddenResponse
 }

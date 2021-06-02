@@ -34,8 +34,22 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/echo/header", func(w http.ResponseWriter, r *http.Request) {
+		header := NewParamsParser(r.Header)
+		intHeader := header.Int("Int-Header")
+		stringHeader := header.String("String-Header")
+		if !checkErrors(header, w) { return }
+		response := echoService.EchoHeader(intHeader, stringHeader)
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/echo/url_params/:int_url/:string_url", func(w http.ResponseWriter, r *http.Request) {
+		query := NewParamsParser(r.URL.Query())
+		intUrl := query.Int("int_url")
+		stringUrl := query.String("string_url")
+		if !checkErrors(query, w) { return }
+		response := echoService.EchoUrlParams(intUrl, stringUrl)
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode(response.Ok)
 	})
 }
 
@@ -59,6 +73,8 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/check/forbidden", func(w http.ResponseWriter, r *http.Request) {
+		checkService.CheckForbiddenResponse()
+		w.WriteHeader(403)
 	})
 }
 
