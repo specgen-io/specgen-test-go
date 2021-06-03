@@ -23,6 +23,6 @@ func (service *CheckService) CheckQuery(
 	return &CheckQueryResponse{Ok: Empty()}
 }
 
-func (service *CheckService) CheckForbiddenResponse() *CheckForbiddenResponse {
+func (service *CheckService) CheckForbidden() *CheckForbiddenResponse {
 	return &CheckForbiddenResponse{Forbidden: Empty()}
 }
