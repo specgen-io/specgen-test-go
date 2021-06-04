@@ -60,7 +60,7 @@ commands:
       - run:
           name: Install go-junit-report
           command: |
-            curl -L https://github.com/vsapronov/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
+            curl -L https://github.com/specgen-io/go-junit-report/releases/download/latest/go-junit-report_linux_amd64.zip > go-junit-report.zip
             unzip -o go-junit-report.zip
       - run:
           name: Run tests
