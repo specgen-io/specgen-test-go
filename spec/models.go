@@ -1,7 +1,7 @@
 package spec
 
 type Message struct {
-	IntField int `json:"int_field""`
+	IntField int `json:"int_field"`
 	StringField string `json:"string_field"`
 }
 

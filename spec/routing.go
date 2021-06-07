@@ -76,9 +76,8 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		json.NewEncoder(w).Encode(response.Ok)
 	})
 	router.Get("/check/forbidden", func(w http.ResponseWriter, r *http.Request) {
-		response := checkService.CheckForbidden()
+		checkService.CheckForbidden()
 		w.WriteHeader(403)
-		json.NewEncoder(w).Encode(response.Forbidden)
 	})
 }
 
