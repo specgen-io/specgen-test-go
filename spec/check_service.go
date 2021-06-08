@@ -20,9 +20,9 @@ func (service *CheckService) CheckQuery(
 	pEnum Choice,
 	pStringDefaulted string) *CheckQueryResponse {
 
-	return &CheckQueryResponse{Ok: Empty()}
+	return &CheckQueryResponse{Ok: &Empty}
 }
 
 func (service *CheckService) CheckForbidden() *CheckForbiddenResponse {
-	return &CheckForbiddenResponse{Forbidden: Empty()}
+	return &CheckForbiddenResponse{Forbidden: &Empty}
 }

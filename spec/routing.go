@@ -12,7 +12,7 @@ func checkErrors(params *ParamsParser, w http.ResponseWriter) bool {
 		w.WriteHeader(400)
 		fmt.Println(params.Errors)
 		return false
-	}
+		}
 	return true
 }
 
@@ -31,9 +31,7 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		query := NewParamsParser(r.URL.Query())
 		intQuery := query.Int("int_query")
 		stringQuery := query.String("string_query")
-		if !checkErrors(query, w) {
-			return
-		}
+		if !checkErrors(query, w) { return }
 		response := echoService.EchoQuery(intQuery, stringQuery)
 		if response.Ok != nil {
 			w.WriteHeader(200)
@@ -45,9 +43,7 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		header := NewParamsParser(r.Header)
 		intHeader := header.Int("Int-Header")
 		stringHeader := header.String("String-Header")
-		if !checkErrors(header, w) {
-			return
-		}
+		if !checkErrors(header, w) { return }
 		response := echoService.EchoHeader(intHeader, stringHeader)
 		if response.Ok != nil {
 			w.WriteHeader(200)
@@ -62,9 +58,7 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		query := NewParamsParser(r.URL.Query())
 		intUrl := query.Int(":int_url")
 		stringUrl := query.String(":string_url")
-		if !checkErrors(query, w) {
-			return
-		}
+		if !checkErrors(query, w) { return }
 		response := echoService.EchoUrlParams(intUrl, stringUrl)
 		if response.Ok != nil {
 			w.WriteHeader(200)
@@ -88,9 +82,7 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		pDecimal := query.Decimal("p_decimal")
 		pEnum := Choice(query.StringEnum("p_enum", ChoiceValuesStrings))
 		pStringDefaulted := query.StringDefaulted("p_string_defaulted", "the default value")
-		if !checkErrors(query, w) {
-			return
-		}
+		if !checkErrors(query, w) { return }
 		response := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pDatetime, pInt, pLong, pDecimal, pEnum, pStringDefaulted)
 		if response.Ok != nil {
 			w.WriteHeader(200)
@@ -111,3 +103,4 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		}
 	})
 }
+
