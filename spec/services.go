@@ -6,19 +6,19 @@ import (
 )
 
 type EchoBodyResponse struct {
-	Ok Message
+	Ok *Message
 }
 
 type EchoQueryResponse struct {
-	Ok Message
+	Ok *Message
 }
 
 type EchoHeaderResponse struct {
-	Ok Message
+	Ok *Message
 }
 
 type EchoUrlParamsResponse struct {
-	Ok Message
+	Ok *Message
 }
 
 type IEchoService interface {
@@ -28,19 +28,17 @@ type IEchoService interface {
 	EchoUrlParams(intUrl int, stringUrl string) *EchoUrlParamsResponse
 }
 
-type EmptyDef struct {}
+type EmptyDef struct{}
 
-func Empty() EmptyDef {
-	return EmptyDef{}
-}
+var Empty = EmptyDef{}
 
 type CheckQueryResponse struct {
-	Ok interface{}
+	Ok *EmptyDef
 }
 
 type CheckForbiddenResponse struct {
-	Ok interface{}
-	Forbidden interface{}
+	Ok        *Message
+	Forbidden *EmptyDef
 }
 
 type ICheckService interface {

@@ -21,8 +21,11 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		var body Message
 		json.NewDecoder(r.Body).Decode(&body)
 		response := echoService.EchoBody(&body)
-		w.WriteHeader(200)
-		json.NewEncoder(w).Encode(response.Ok)
+		if response.Ok != nil {
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+			return
+		}
 	})
 }
 

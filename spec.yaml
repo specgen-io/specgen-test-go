@@ -65,6 +65,7 @@ http:
     check_forbidden:
       endpoint: GET /check/forbidden
       response:
+        ok: Message
         forbidden: empty
 
 models:
