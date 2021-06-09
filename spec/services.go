@@ -22,10 +22,10 @@ type EchoUrlParamsResponse struct {
 }
 
 type IEchoService interface {
-	EchoBody(body *Message) *EchoBodyResponse
-	EchoQuery(intQuery int, stringQuery string) *EchoQueryResponse
-	EchoHeader(intHeader int, stringHeader string) *EchoHeaderResponse
-	EchoUrlParams(intUrl int, stringUrl string) *EchoUrlParamsResponse
+	EchoBody(body *Message) (*EchoBodyResponse, error)
+	EchoQuery(intQuery int, stringQuery string) (*EchoQueryResponse, error)
+	EchoHeader(intHeader int, stringHeader string) (*EchoHeaderResponse, error)
+	EchoUrlParams(intUrl int, stringUrl string) (*EchoUrlParamsResponse, error)
 }
 
 type EmptyDef struct{}
@@ -42,6 +42,6 @@ type CheckForbiddenResponse struct {
 }
 
 type ICheckService interface {
-	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) *CheckQueryResponse
-	CheckForbidden() *CheckForbiddenResponse
+	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) (*CheckQueryResponse, error)
+	CheckForbidden() (*CheckForbiddenResponse, error)
 }

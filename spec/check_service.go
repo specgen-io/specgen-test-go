@@ -5,7 +5,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type CheckService struct {}
+type CheckService struct{}
 
 func (service *CheckService) CheckQuery(
 	pString string,
@@ -18,11 +18,11 @@ func (service *CheckService) CheckQuery(
 	pLong int64,
 	pDecimal decimal.Decimal,
 	pEnum Choice,
-	pStringDefaulted string) *CheckQueryResponse {
+	pStringDefaulted string) (*CheckQueryResponse, error) {
 
-	return &CheckQueryResponse{Ok: &Empty}
+	return &CheckQueryResponse{Ok: &Empty}, nil
 }
 
-func (service *CheckService) CheckForbidden() *CheckForbiddenResponse {
-	return &CheckForbiddenResponse{Forbidden: &Empty}
+func (service *CheckService) CheckForbidden() (*CheckForbiddenResponse, error) {
+	return &CheckForbiddenResponse{Forbidden: &Empty}, nil
 }
