@@ -1,9 +1,11 @@
 package spec
 
-import (
-	"cloud.google.com/go/civil"
-	"github.com/shopspring/decimal"
-)
+import "cloud.google.com/go/civil"
+import "github.com/shopspring/decimal"
+
+type EmptyDef struct{}
+
+var Empty = EmptyDef{}
 
 type EchoBodyResponse struct {
 	Ok *Message
@@ -28,16 +30,12 @@ type IEchoService interface {
 	EchoUrlParams(intUrl int, stringUrl string) (*EchoUrlParamsResponse, error)
 }
 
-type EmptyDef struct{}
-
-var Empty = EmptyDef{}
-
 type CheckQueryResponse struct {
 	Ok *EmptyDef
 }
 
 type CheckForbiddenResponse struct {
-	Ok        *Message
+	Ok *Message
 	Forbidden *EmptyDef
 }
 
@@ -45,3 +43,4 @@ type ICheckService interface {
 	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) (*CheckQueryResponse, error)
 	CheckForbidden() (*CheckForbiddenResponse, error)
 }
+
