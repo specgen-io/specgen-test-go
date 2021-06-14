@@ -1,23 +1,28 @@
 package spec
 
-type CheckService struct {}
+import (
+	"cloud.google.com/go/civil"
+	"github.com/shopspring/decimal"
+)
+
+type CheckService struct{}
 
 func (service *CheckService) CheckQuery(
 	pString string,
 	pStringOpt *string,
 	pStringArray []string,
-	pDate string,
-	pDateArray []string,
-	pDatetime string,
+	pDate civil.Date,
+	pDateArray []civil.Date,
+	pDatetime civil.DateTime,
 	pInt int,
 	pLong int64,
-	pDecimal float64,
+	pDecimal decimal.Decimal,
 	pEnum Choice,
-	pStringDefaulted string) *CheckQueryResponse {
+	pStringDefaulted string) (*CheckQueryResponse, error) {
 
-	return &CheckQueryResponse{Ok: Empty()}
+	return &CheckQueryResponse{Ok: &Empty}, nil
 }
 
-func (service *CheckService) CheckResponseForbidden() *CheckResponseForbiddenResponse {
-	return &CheckResponseForbiddenResponse{Forbidden: Empty()}
+func (service *CheckService) CheckForbidden() (*CheckForbiddenResponse, error) {
+	return &CheckForbiddenResponse{Forbidden: &Empty}, nil
 }
