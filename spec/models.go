@@ -8,27 +8,17 @@ type Message struct {
 type Choice string
 
 const (
-	ChoiceFirst Choice = "FIRST_CHOICE"
-	ChoiceSecond Choice = "SECOND_CHOICE"
-	ChoiceThird Choice = "THIRD_CHOICE"
+	ChoiceFirstChoice Choice = "FIRST_CHOICE"
+	ChoiceSecondChoice Choice = "SECOND_CHOICE"
+	ChoiceThirdChoice Choice = "THIRD_CHOICE"
 )
 
-var ChoiceValuesStrings = []string{string(ChoiceFirst), string(ChoiceSecond), string(ChoiceThird)}
-var ChoiceValues = []Choice{ChoiceFirst, ChoiceSecond, ChoiceThird}
+var ChoiceValuesStrings = []string{string(ChoiceFirstChoice), string(ChoiceSecondChoice), string(ChoiceThirdChoice)}
+var ChoiceValues = []Choice{ChoiceFirstChoice, ChoiceSecondChoice, ChoiceThirdChoice}
 
-func ChoiceNullable(s *string) *Choice {
-	if s != nil {
-		v := Choice(*s)
-		return &v
-	} else {
-		return nil
-	}
-}
-
-func ChoiceArray(s []string) []Choice {
-	values := []Choice{}
-	for _, s := range s {
-		values = append(values, Choice(s))
-	}
-	return values
+func (self *Choice) UnmarshalJSON(b []byte) error {
+	str, err := readEnumStringValue(b, ChoiceValuesStrings)
+	if err != nil { return err }
+	*self = Choice(str)
+	return nil
 }

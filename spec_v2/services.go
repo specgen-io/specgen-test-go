@@ -11,4 +11,3 @@ type EchoBodyResponse struct {
 type IEchoService interface {
 	EchoBody(body *Message) (*EchoBodyResponse, error)
 }
-

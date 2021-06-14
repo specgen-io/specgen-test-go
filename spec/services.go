@@ -43,4 +43,3 @@ type ICheckService interface {
 	CheckQuery(pString string, pStringOpt *string, pStringArray []string, pDate civil.Date, pDateArray []civil.Date, pDatetime civil.DateTime, pInt int, pLong int64, pDecimal decimal.Decimal, pEnum Choice, pStringDefaulted string) (*CheckQueryResponse, error)
 	CheckForbidden() (*CheckForbiddenResponse, error)
 }
-
