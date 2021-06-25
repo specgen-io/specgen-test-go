@@ -104,6 +104,24 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 			return
 		}
 	})
+	router.Get("/check/url_params/:int_url/:string_url/:float_url/:bool_url/:uuid_url/:decimal_url/:date_url", func(w http.ResponseWriter, r *http.Request) {
+		query := NewParamsParser(r.URL.Query())
+		intUrl := query.Int64(":int_url")
+		stringUrl := query.String(":string_url")
+		floatUrl := query.Float32(":float_url")
+		boolUrl := query.Bool(":bool_url")
+		uuidUrl := query.Uuid(":uuid_url")
+		decimalUrl := query.Decimal(":decimal_url")
+		dateUrl := query.Date(":date_url")
+		if !checkErrors(query, w) { return }
+		response, err := checkService.CheckUrlParams(intUrl, stringUrl, floatUrl, boolUrl, uuidUrl, decimalUrl, dateUrl)
+		if !checkOperationErrors(err, w) { return }
+		if response.Ok != nil {
+			w.WriteHeader(200)
+			json.NewEncoder(w).Encode(response.Ok)
+			return
+		}
+	})
 	router.Get("/check/forbidden", func(w http.ResponseWriter, r *http.Request) {
 		response, err := checkService.CheckForbidden()
 		if !checkOperationErrors(err, w) { return }

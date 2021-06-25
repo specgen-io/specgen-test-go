@@ -62,6 +62,11 @@ http:
       response:
         ok: empty
 
+    check_url_params:
+      endpoint: GET /check/url_params/{int_url:long}/{string_url:string}/{float_url:float}/{bool_url:bool}/{uuid_url:uuid}/{decimal_url:decimal}/{date_url:date}
+      response:
+        ok: empty
+
     check_forbidden:
       endpoint: GET /check/forbidden
       response:

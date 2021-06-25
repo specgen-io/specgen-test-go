@@ -2,6 +2,7 @@ package spec
 
 import (
 	"cloud.google.com/go/civil"
+	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
@@ -21,6 +22,18 @@ func (service *CheckService) CheckQuery(
 	pStringDefaulted string) (*CheckQueryResponse, error) {
 
 	return &CheckQueryResponse{Ok: &Empty}, nil
+}
+
+func (service *CheckService) CheckUrlParams(
+	intUrl int64,
+	stringUrl string,
+	floatUrl float32,
+	boolUrl bool,
+	uuidUrl uuid.UUID,
+	decimalUrl decimal.Decimal,
+	dateUrl civil.Date) (*CheckUrlParamsResponse, error) {
+
+	return &CheckUrlParamsResponse{Ok: &Empty}, nil
 }
 
 func (service *CheckService) CheckForbidden() (*CheckForbiddenResponse, error) {
