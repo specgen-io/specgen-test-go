@@ -38,10 +38,10 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		}
 	})
 	router.Get("/echo/query", func(w http.ResponseWriter, r *http.Request) {
-		query := NewParamsParser(r.URL.Query())
-		intQuery := query.Int("int_query")
-		stringQuery := query.String("string_query")
-		if !checkErrors(query, w) { return }
+		queryParams := NewParamsParser(r.URL.Query())
+		intQuery := queryParams.Int("int_query")
+		stringQuery := queryParams.String("string_query")
+		if !checkErrors(queryParams, w) { return }
 		response, err := echoService.EchoQuery(intQuery, stringQuery)
 		if !checkOperationErrors(err, w) { return }
 		if response.Ok != nil {
@@ -51,10 +51,10 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		}
 	})
 	router.Get("/echo/header", func(w http.ResponseWriter, r *http.Request) {
-		header := NewParamsParser(r.Header)
-		intHeader := header.Int("Int-Header")
-		stringHeader := header.String("String-Header")
-		if !checkErrors(header, w) { return }
+		headerParams := NewParamsParser(r.Header)
+		intHeader := headerParams.Int("Int-Header")
+		stringHeader := headerParams.String("String-Header")
+		if !checkErrors(headerParams, w) { return }
 		response, err := echoService.EchoHeader(intHeader, stringHeader)
 		if !checkOperationErrors(err, w) { return }
 		if response.Ok != nil {
@@ -67,10 +67,10 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 		AllowHeaders: []string{"Int-Header, String-Header"},
 	})
 	router.Get("/echo/url_params/:int_url/:string_url", func(w http.ResponseWriter, r *http.Request) {
-		query := NewParamsParser(r.URL.Query())
-		intUrl := query.Int(":int_url")
-		stringUrl := query.String(":string_url")
-		if !checkErrors(query, w) { return }
+		urlParams := NewParamsParser(r.URL.Query())
+		intUrl := urlParams.Int(":int_url")
+		stringUrl := urlParams.String(":string_url")
+		if !checkErrors(urlParams, w) { return }
 		response, err := echoService.EchoUrlParams(intUrl, stringUrl)
 		if !checkOperationErrors(err, w) { return }
 		if response.Ok != nil {
@@ -83,19 +83,19 @@ func AddEchoRoutes(router *vestigo.Router, echoService IEchoService) {
 
 func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 	router.Get("/check/query", func(w http.ResponseWriter, r *http.Request) {
-		query := NewParamsParser(r.URL.Query())
-		pString := query.String("p_string")
-		pStringOpt := query.StringNullable("p_string_opt")
-		pStringArray := query.StringArray("p_string_array")
-		pDate := query.Date("p_date")
-		pDateArray := query.DateArray("p_date_array")
-		pDatetime := query.DateTime("p_datetime")
-		pInt := query.Int("p_int")
-		pLong := query.Int64("p_long")
-		pDecimal := query.Decimal("p_decimal")
-		pEnum := Choice(query.StringEnum("p_enum", ChoiceValuesStrings))
-		pStringDefaulted := query.StringDefaulted("p_string_defaulted", "the default value")
-		if !checkErrors(query, w) { return }
+		queryParams := NewParamsParser(r.URL.Query())
+		pString := queryParams.String("p_string")
+		pStringOpt := queryParams.StringNullable("p_string_opt")
+		pStringArray := queryParams.StringArray("p_string_array")
+		pDate := queryParams.Date("p_date")
+		pDateArray := queryParams.DateArray("p_date_array")
+		pDatetime := queryParams.DateTime("p_datetime")
+		pInt := queryParams.Int("p_int")
+		pLong := queryParams.Int64("p_long")
+		pDecimal := queryParams.Decimal("p_decimal")
+		pEnum := Choice(queryParams.StringEnum("p_enum", ChoiceValuesStrings))
+		pStringDefaulted := queryParams.StringDefaulted("p_string_defaulted", "the default value")
+		if !checkErrors(queryParams, w) { return }
 		response, err := checkService.CheckQuery(pString, pStringOpt, pStringArray, pDate, pDateArray, pDatetime, pInt, pLong, pDecimal, pEnum, pStringDefaulted)
 		if !checkOperationErrors(err, w) { return }
 		if response.Ok != nil {
@@ -105,15 +105,15 @@ func AddCheckRoutes(router *vestigo.Router, checkService ICheckService) {
 		}
 	})
 	router.Get("/check/url_params/:int_url/:string_url/:float_url/:bool_url/:uuid_url/:decimal_url/:date_url", func(w http.ResponseWriter, r *http.Request) {
-		query := NewParamsParser(r.URL.Query())
-		intUrl := query.Int64(":int_url")
-		stringUrl := query.String(":string_url")
-		floatUrl := query.Float32(":float_url")
-		boolUrl := query.Bool(":bool_url")
-		uuidUrl := query.Uuid(":uuid_url")
-		decimalUrl := query.Decimal(":decimal_url")
-		dateUrl := query.Date(":date_url")
-		if !checkErrors(query, w) { return }
+		urlParams := NewParamsParser(r.URL.Query())
+		intUrl := urlParams.Int64(":int_url")
+		stringUrl := urlParams.String(":string_url")
+		floatUrl := urlParams.Float32(":float_url")
+		boolUrl := urlParams.Bool(":bool_url")
+		uuidUrl := urlParams.Uuid(":uuid_url")
+		decimalUrl := urlParams.Decimal(":decimal_url")
+		dateUrl := urlParams.Date(":date_url")
+		if !checkErrors(urlParams, w) { return }
 		response, err := checkService.CheckUrlParams(intUrl, stringUrl, floatUrl, boolUrl, uuidUrl, decimalUrl, dateUrl)
 		if !checkOperationErrors(err, w) { return }
 		if response.Ok != nil {
