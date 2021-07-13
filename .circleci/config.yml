@@ -3,13 +3,18 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.66
+    default: 2.0.301
+
+  specgen-version-major:
+    type: string
+    default: v2
+
   tests-version:
     type: string
-    default: 1.0.16
+    default: 2.0.30
 
 jobs:
-  service-go:
+  build-test:
     docker:
       - image: cimg/go:1.15.6
     working_directory: ~/test-service-go
@@ -17,11 +22,14 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: ./build.sh
+          command: |
+            go install github.com/specgen-io/specgen/<<pipeline.parameters.specgen-version-major>>@v<< pipeline.parameters.specgen-version >>
+            go generate
+            go build
 
       - run:
           name: Start service-go
-          command: ./dist/linux_amd64/service-go --port 8081
+          command: go run service.go --port 8081
           background: true
       - wait-url:
           url: http://localhost:8081/
