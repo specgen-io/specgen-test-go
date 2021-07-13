@@ -1,12 +1,13 @@
-package spec
+package spec_v2
 
 import (
-	"cloud.google.com/go/civil"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/shopspring/decimal"
 	"strconv"
 	"strings"
+	"time"
+	"cloud.google.com/go/civil"
+	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 type ParamsParser struct {
@@ -67,9 +68,9 @@ func (parser *ParamsParser) parseDate(s string) civil.Date {
 }
 
 func (parser *ParamsParser) parseDateTime(s string) civil.DateTime {
-	v, err := civil.ParseDateTime(s)
+	t, err := time.Parse("2006-01-02T15:04:05.999Z", s)
 	parser.addError(err)
-	return v
+	return civil.DateTimeOf(t)
 }
 
 func (parser *ParamsParser) parseStringEnum(s string, vs []string) string {

@@ -3,25 +3,33 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.66
+    default: 2.0.301
+
+  specgen-version-major:
+    type: string
+    default: v2
+
   tests-version:
     type: string
-    default: 1.0.16
+    default: 2.0.34
 
 jobs:
-  service-go:
+  build-test:
     docker:
-      - image: cimg/go:1.15.6
+      - image: cimg/go:1.16.4
     working_directory: ~/test-service-go
     steps:
       - checkout
       - run:
           name: Build
-          command: ./build.sh
+          command: |
+            go install github.com/specgen-io/specgen/<<pipeline.parameters.specgen-version-major>>@v<< pipeline.parameters.specgen-version >>
+            go generate
+            go build
 
       - run:
           name: Start service-go
-          command: ./dist/linux_amd64/service-go --port 8081
+          command: go run service.go --port 8081
           background: true
       - wait-url:
           url: http://localhost:8081/
@@ -33,6 +41,7 @@ jobs:
           name: Release
           command: |
             if [[ $CIRCLE_BRANCH == main ]] || [[ $CIRCLE_BRANCH == v* ]]; then
+              ./build.sh
               ./release.sh << pipeline.parameters.specgen-version >> ${GITHUB_TOKEN}
             else
               echo "Will not release - not running on main branch"
@@ -98,7 +107,7 @@ commands:
             done
 
 workflows:
-  service-go:
+  build-test:
     jobs:
-      - service-go:
+      - build-test:
           context: specgen
