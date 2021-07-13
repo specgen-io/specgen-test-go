@@ -11,7 +11,7 @@ parameters:
 
   tests-version:
     type: string
-    default: 2.0.30
+    default: 2.0.34
 
 jobs:
   build-test:
